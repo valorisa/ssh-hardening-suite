@@ -26,7 +26,7 @@ Ce projet, `ssh-hardening-suite`, est une procédure exhaustive pour le durcisse
 
 Installer OpenSSH si nécessaire :
 
-```
+```bash
 # Debian / Ubuntu
 sudo apt install openssh-client openssh-server
 
@@ -44,7 +44,7 @@ pkg install openssh
 
 Installer OpenSSH Server si non présent :
 
-```
+```pwsh
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 Start-Service sshd
 Set-Service -Name sshd -StartupType Automatic
@@ -56,19 +56,19 @@ Set-Service -Name sshd -StartupType Automatic
 
 #### Clé ED25519
 
-```
+```bash
 ssh-keygen -t ed25519 -a 100 -o -f ~/.ssh/id_ed25519 -C "user@host"
 ```
 
 #### Clé ED25519-SK (FIDO2 / YubiKey)
 
-```
+```bash
 ssh-keygen -t ed25519-sk -O resident -f ~/.ssh/id_ed25519_sk -C "user@host"
 ```
 
 #### Chargement des clés dans l'agent
 
-```
+```bash
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 ssh-add ~/.ssh/id_ed25519_sk   # Demande touch/pin si token
@@ -76,7 +76,7 @@ ssh-add ~/.ssh/id_ed25519_sk   # Demande touch/pin si token
 
 #### Vérification des permissions
 
-```
+```bash
 chmod 600 ~/.ssh/id_ed25519 ~/.ssh/id_ed25519_sk
 chmod 644 ~/.ssh/id_ed25519.pub ~/.ssh/id_ed25519_sk.pub
 ```
@@ -87,7 +87,7 @@ chmod 644 ~/.ssh/id_ed25519.pub ~/.ssh/id_ed25519_sk.pub
 
 Exemple de configuration minimale durcie :
 
-```
+```text
 Host server.example.com
     HostName server.example.com
     User user
@@ -110,7 +110,7 @@ Host server.example.com
 
 Principes recommandés pour `/etc/ssh/sshd_config` :
 
-```
+```text
 # Protocole et port
 Protocol 2
 Port 22
@@ -165,7 +165,7 @@ TCPKeepAlive no
 
 #### Exemple Windows PowerShell
 
-```
+```pwsh
 # Autoriser une plage IP spécifique
 New-NetFirewallRule -DisplayName "SSH Secure Port 22" `
     -Direction Inbound `
@@ -185,7 +185,7 @@ New-NetFirewallRule -DisplayName "SSH Block All Others" `
 
 #### Exemple Linux (iptables)
 
-```
+```bash
 # Autoriser SSH depuis une IP spécifique
 sudo iptables -A INPUT -p tcp --dport 22 -s 192.0.2.0/24 -j ACCEPT
 
@@ -198,7 +198,7 @@ sudo iptables-save > /etc/iptables/rules.v4
 
 #### Exemple Linux (firewalld)
 
-```
+```bash
 # Ajouter une règle riche pour limiter SSH
 sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="192.0.2.0/24" port port="22" protocol="tcp" accept'
 
@@ -217,7 +217,7 @@ sudo firewall-cmd --reload
 
 Exposer un service distant en local :
 
-```
+```bash
 ssh -L 8080:127.0.0.1:80 user@server
 ```
 
@@ -227,7 +227,7 @@ Accès via `http://localhost:8080`
 
 Publier un service local via le serveur :
 
-```
+```bash
 ssh -R 8080:127.0.0.1:80 user@server
 ```
 
@@ -237,7 +237,7 @@ Le serveur écoute sur son port 8080 et redirige vers votre machine locale.
 
 Créer un proxy SOCKS flexible :
 
-```
+```bash
 ssh -D 1080 user@server
 ```
 
@@ -251,7 +251,7 @@ Configurer vos applications pour utiliser `localhost:1080` comme proxy SOCKS5.
 
 Consulter les logs SSH via systemd :
 
-```
+```bash
 # Logs récents
 journalctl -u sshd --since "1 hour ago"
 
@@ -266,7 +266,7 @@ journalctl -u sshd | grep "Failed password"
 
 Utiliser logcat pour filtrer les événements SSH :
 
-```
+```bash
 logcat | grep ssh
 ```
 
@@ -280,7 +280,7 @@ logcat | grep ssh
 
 ##### PowerShell (CLI)
 
-```
+```pwsh
 # Afficher les événements SSH récents
 Get-WinEvent -LogName "OpenSSH/Operational" -MaxEvents 50
 
@@ -296,7 +296,7 @@ auditpol /set /subcategory:"Logoff" /success:enable /failure:enable
 
 ##### Fail2Ban (Linux)
 
-```
+```bash
 # Installer Fail2Ban
 sudo apt install fail2ban   # Debian/Ubuntu
 sudo pacman -S fail2ban     # Arch
@@ -307,7 +307,7 @@ sudo nano /etc/fail2ban/jail.local
 
 Exemple de configuration :
 
-```
+```text
 [sshd]
 enabled = true
 port = 22
@@ -318,7 +318,7 @@ bantime = 3600
 findtime = 600
 ```
 
-```
+```bash
 # Démarrer et activer Fail2Ban
 sudo systemctl enable --now fail2ban
 
@@ -359,7 +359,7 @@ Ce projet fournit une suite complète de durcissement SSH, inspirée par l'incid
 
 MIT License - Voir le fichier `LICENSE` pour plus de détails.
 
-Les améliorations apportées [1][2][3] :
+Les améliorations apportées :
 
 - ✅ **Tous les exemples de commandes** sont maintenant dans des blocs de code avec coloration syntaxique appropriée (`bash`, `powershell`, `sshconfig`, `ini`)
 - ✅ **Exemples firewall** ajoutés pour Linux (iptables et firewalld) en plus de Windows
@@ -370,6 +370,6 @@ Les améliorations apportées [1][2][3] :
 - ✅ Ajout de sections **Ressources** et **Licence**
 
 Citations :
-[1] Basic writing and formatting syntax https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
-[2] Creating and highlighting code blocks https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks
-[3] Markdown Cheatsheet · adam-p/markdown-here Wiki https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet
+[1] Basic writing and formatting syntax <https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax>
+[2] Creating and highlighting code blocks <https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks>
+[3] Markdown Cheatsheet · adam-p/markdown-here Wiki <https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet>
