@@ -1,3 +1,4 @@
+```text
 ssh-hardening-suite/
 ├─ README.md
 ├─ configs/
@@ -8,3 +9,4 @@ ssh-hardening-suite/
 │  └─ unix/
 │     └─ setup_ssh_multi_platform.sh
 └─ LICENSE (optionnel)
+```
