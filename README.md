@@ -1,4 +1,4 @@
-ssh-hardening-suite
+# ssh-hardening-suite
 
 Introduction
 
@@ -24,7 +24,8 @@ Procédure complète
 
 Linux/macOS/Termux
 
-# Installer OpenSSH si nécessaire
+## Installer OpenSSH si nécessaire
+
 sudo apt install openssh-client openssh-server   # Debian/Ubuntu
 sudo pacman -S openssh                            # Arch
 brew install openssh                              # macOS
@@ -32,14 +33,15 @@ pkg install openssh                               # Termux
 
 Windows 11 / Cygwin
 
-# Installer OpenSSH Server si non présent
+## Installer OpenSSH Server si non présent
+
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 Start-Service sshd
 Set-Service -Name sshd -StartupType Automatic
 
 ---
 
-2. Génération de clés SSH
+1. Génération de clés SSH
 
 Clé ED25519
 
@@ -62,7 +64,7 @@ chmod 644 ~/.ssh/id_ed25519.pub ~/.ssh/id_ed25519_sk.pub
 
 ---
 
-3. Configuration du client SSH (~/.ssh/config)
+1. Configuration du client SSH (~/.ssh/config)
 
 Host server.example.com
     HostName server.example.com
@@ -81,7 +83,7 @@ Host server.example.com
 
 ---
 
-4. Configuration serveur SSH ("sshd_config" ultra-durci)
+1. Configuration serveur SSH ("sshd_config" ultra-durci)
 
 - Protocole : 2
 - Clés : ED25519 uniquement (ED25519-SK possible pour token)
@@ -94,7 +96,7 @@ Host server.example.com
 
 ---
 
-5. Firewall et restriction IP
+1. Firewall et restriction IP
 
 - Autoriser seulement les IP et sous-réseaux connus
 - Bloquer toutes les autres connexions TCP/22
@@ -105,7 +107,7 @@ New-NetFirewallRule -DisplayName "SSH Block All Others" -Direction Inbound -Prot
 
 ---
 
-6. SSH Tunneling
+1. SSH Tunneling
 
 - Tunnel local : "ssh -L 8080:127.0.0.1:80 user@server"
 - Tunnel distant : "ssh -R 8080:127.0.0.1:80 user@server"
@@ -113,7 +115,7 @@ New-NetFirewallRule -DisplayName "SSH Block All Others" -Direction Inbound -Prot
 
 ---
 
-7. Audit et monitoring
+1. Audit et monitoring
 
 - Linux/macOS : "journalctl -u sshd"
 - Termux : "logcat | grep ssh"
@@ -122,7 +124,7 @@ New-NetFirewallRule -DisplayName "SSH Block All Others" -Direction Inbound -Prot
 
 ---
 
-8. Bonnes pratiques
+1. Bonnes pratiques
 
 - Passphrase forte obligatoire sur toutes les clés privées
 - Utiliser ED25519-SK pour l’accès critique (FIDO2)
