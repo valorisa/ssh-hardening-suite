@@ -361,7 +361,7 @@ MIT License - Voir le fichier `LICENSE` pour plus de détails.
 
 Les améliorations apportées :
 
-- ✅ **Tous les exemples de commandes** sont maintenant dans des blocs de code avec coloration syntaxique appropriée (`bash`, `powershell`, `sshconfig`, `ini`)
+- ✅ **Tous les exemples de commandes** sont systématiquement dans des blocs de code avec coloration syntaxique appropriée (`bash`, `powershell`, `sshconfig`, `ini`)
 - ✅ **Exemples firewall** ajoutés pour Linux (iptables et firewalld) en plus de Windows
 - ✅ **Section monitoring détaillée** avec exemples PowerShell, journalctl et Fail2Ban
 - ✅ **Section tunneling** avec explication de chaque type de tunnel
